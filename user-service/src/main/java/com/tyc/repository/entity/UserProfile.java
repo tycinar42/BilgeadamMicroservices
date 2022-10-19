@@ -20,13 +20,13 @@ public class UserProfile {
     /**
      * Auth servisinden kayit olan kisinin auth id'sini buraya esitliyoruz.
      */
-    Long authId;
-    String username;
-    String name;
-    String surname;
-    String email;
-    String phone;
-    String address;
-    String avatar;
+    private Long authId;
+    private String username;
+    private String name;
+    private String surname;
+    private String email;
+    private String phone;
+    private String address;
+    private String avatar;
 
 }

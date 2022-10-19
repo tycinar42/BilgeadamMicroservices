@@ -50,13 +50,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(createError(errorType, ex), errorType.getHttpStatus());
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseBody
-    public final ResponseEntity<ErrorMessage> handlePSQLException(
-            DataIntegrityViolationException ex) {
-        ErrorType errorType = USER_ALREADY_EXISTS;
-        return new ResponseEntity<>(createError(errorType, ex), errorType.getHttpStatus());
-    }
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    @ResponseBody
+//    public final ResponseEntity<ErrorMessage> handlePSQLException(
+//            DataIntegrityViolationException ex) {
+//        ErrorType errorType = USER_ALREADY_EXISTS;
+//        return new ResponseEntity<>(createError(errorType, ex), errorType.getHttpStatus());
+//    }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
