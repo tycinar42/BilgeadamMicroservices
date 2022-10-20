@@ -6,6 +6,7 @@ import com.tyc.exception.ErrorType;
 import com.tyc.exception.UserServiceException;
 import com.tyc.repository.IUserProfileRepository;
 import com.tyc.repository.entity.UserProfile;
+import com.tyc.utility.JwtTokenManager;
 import com.tyc.utility.ServiceManager;
 import com.tyc.utility.TokenManager;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,10 @@ import java.util.Optional;
 @Service
 public class UserProfileService extends ServiceManager<UserProfile, Long> {
     private final IUserProfileRepository repository;
-    private final TokenManager tokenManager;
+//    private final TokenManager tokenManager;
+    private final JwtTokenManager tokenManager;
 
-    public UserProfileService(IUserProfileRepository repository, TokenManager tokenManager) {
+    public UserProfileService(IUserProfileRepository repository, JwtTokenManager tokenManager) {
         super(repository);
         this.repository = repository;
         this.tokenManager = tokenManager;
@@ -33,9 +35,9 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     }
 
     public Boolean update(UserProfileUpdateRequestDto dto) {
-        Long authId = tokenManager.getId(dto.getToken());
-        if(authId == null) throw new UserServiceException(ErrorType.INVALID_TOKEN);
-        Optional<UserProfile> userProfile = repository.findById(authId);
+        Optional<Long> authId = tokenManager.getByIdFromToken(dto.getToken());
+        if(authId.isEmpty()) throw new UserServiceException(ErrorType.INVALID_ID);
+        Optional<UserProfile> userProfile = repository.findById(authId.get());
         if(userProfile.isEmpty()) throw new UserServiceException(ErrorType.USER_DID_NOT_FIND);
         UserProfile profile = userProfile.get();
         profile.setAddress(dto.getAddress());
