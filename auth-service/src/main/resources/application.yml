@@ -1,23 +1,8 @@
-server:
-  port: 9090
-
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://34.132.121.83:5062/java3auth
-    url: jdbc:postgresql://localhost:5432/BilgeadamMicroservicesAuthService
-    username: postgres
-    password: root
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-# JWT
-myjwt:
-  secretkey: ${secretkey}
-  audience: ${audience}
-  issuer: ${issuer}
+  cloud:
+    config:
+      uri: http://localhost:8888
+  config:
+    import: "configserver:"
+  application:
+    name: auth-service-application
