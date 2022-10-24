@@ -2,10 +2,13 @@ package com.tyc.controller;
 
 import com.tyc.dto.request.UserProfileSaveRequestDto;
 import com.tyc.dto.request.UserProfileUpdateRequestDto;
+import com.tyc.repository.entity.UserProfile;
 import com.tyc.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.tyc.constants.ApiUrls.*;
 
@@ -39,8 +42,8 @@ public class UserProfileController {
         return null;
     }
 
-    @PostMapping(USER_LIST)
-    public ResponseEntity<Boolean> userList() {
-        return null;
+    @GetMapping(USER_LIST)
+    public ResponseEntity<List<UserProfile>> userList() {
+        return ResponseEntity.ok(service.findAll());
     }
 }

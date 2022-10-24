@@ -8,6 +8,6 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @EnableConfigServer
 public class ConfigServerGitApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ConfigServerGitApplication.class);
+        SpringApplication.run(ConfigServerGitApplication.class, args);
     }
 }

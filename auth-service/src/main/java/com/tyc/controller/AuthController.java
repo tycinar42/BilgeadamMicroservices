@@ -8,12 +8,11 @@ import com.tyc.repository.enums.Roles;
 import com.tyc.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static com.tyc.constants.ApiUrls.*;
 
@@ -31,5 +30,10 @@ public class AuthController {
         if(service.save(dto))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/getall")
+    public ResponseEntity<List<Auth>> getList() {
+        return ResponseEntity.ok(service.findAll());
     }
 }
