@@ -9,6 +9,8 @@ import com.tyc.repository.entity.UserProfile;
 import com.tyc.utility.JwtTokenManager;
 import com.tyc.utility.ServiceManager;
 import com.tyc.utility.TokenManager;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,11 +20,29 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     private final IUserProfileRepository repository;
 //    private final TokenManager tokenManager;
     private final JwtTokenManager tokenManager;
+    private final CacheManager cacheManager;
 
-    public UserProfileService(IUserProfileRepository repository, JwtTokenManager tokenManager) {
+    public UserProfileService(IUserProfileRepository repository, JwtTokenManager tokenManager, CacheManager cacheManager) {
         super(repository);
         this.repository = repository;
         this.tokenManager = tokenManager;
+        this.cacheManager = cacheManager;
+    }
+
+    @Cacheable(value = "uppercase")
+    public String getUpperCase(Long authId) {
+        /**
+         * Bu kisim method'un belli islem basamaklarini simule etmek ve belli zaman alacak islemleri
+         * gostermek icin yazilmistir.
+         */
+        try {
+            Thread.sleep(3000);
+        } catch (Exception e) {
+
+        }
+        Optional<UserProfile> user = repository.findOptionalByAuthId(authId);
+        if(user.isEmpty()) return "";
+        return user.get().getName().toUpperCase();
     }
 
     public Boolean save(UserProfileSaveRequestDto dto) {
@@ -48,6 +68,16 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         profile.setSurname(dto.getSurname());
         save(profile);
         return true;
+    }
+
+    public void updateCacheReset(UserProfile profile) {
+        save(profile);
+        /**
+         * Bu islem ilgili method tarafindan tutulan tum onbelleklenmis datayi temizler
+         * cok istemedigimiz gerekli oldugunda kullanmamiz gereken bir yapidir
+         * cacheManager.getCache("uppercase")
+         */
+        cacheManager.getCache("uppercase").evict(profile.getAuthId());
     }
 
 }

@@ -19,6 +19,19 @@ public class UserProfileController {
 
     private final UserProfileService service;
 
+
+    @GetMapping("/getupper")
+    public ResponseEntity<String> getUpperCase(Long authId) {
+
+        return ResponseEntity.ok(service.getUpperCase(authId));
+    }
+
+    @PostMapping("/savecacheable")
+    public ResponseEntity<Void> updateUser(@RequestBody UserProfile userProfile) {
+        service.updateCacheReset(userProfile);
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * Kullanici kaydi, auth service'te yapiliyor ve burada olan bilgiler user-service'e gonderiliyor
      * Auth-service'ten gelen parametreler:

@@ -1,38 +1,39 @@
 ext {
     versions = [
-        springBoot              : "2.7.4",
-        springCloud             : "3.1.4",
-        lombok                  : "1.18.24",
-        mapstruct               : "1.5.2.Final",
-        postgresql              : "42.5.0",
-        swagger                 : "1.6.12",
-        auth0                   : "4.1.0",
-        springCloudCircuit      : "2.1.4"
+        springBoot                  : "2.7.4",
+        springCloud                 : "3.1.4",
+        lombok                      : "1.18.24",
+        mapstruct                   : "1.5.2.Final",
+        postgresql                  : "42.5.0",
+        swagger                     : "1.6.12",
+        auth0                       : "4.1.0",
+        springCloudCircuit          : "2.1.4"
     ]
 
     libs = [
-        springBootStarterWeb    : "org.springframework.boot:spring-boot-starter-web:$versions.springBoot",
+        springBootStarterWeb        : "org.springframework.boot:spring-boot-starter-web:$versions.springBoot",
         // Iliskisel veri tabanlari icin baglanti bagimliligi
-        springBootDataJpa       : "org.springframework.boot:spring-boot-starter-data-jpa:$versions.springBoot",
+        springBootDataJpa           : "org.springframework.boot:spring-boot-starter-data-jpa:$versions.springBoot",
         // Web api isteklerine gelen datalarin zorunluluklarini aktif etmek ve kullanmak icin
-        springBootValidation    : "org.springframework.boot:spring-boot-starter-validation:$versions.springBoot",
+        springBootValidation        : "org.springframework.boot:spring-boot-starter-validation:$versions.springBoot",
         // Mikroservisler ve 3. taraf apilere istek atmak icin kullanilan bagimlilik
-        springCloudOpenFeign    : "org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
-        swaggerui               : "org.springdoc:springdoc-openapi-ui:$versions.swagger",
-        lombok                  : "org.projectlombok:lombok:$versions.lombok",
-        postgresql              : "org.postgresql:postgresql:$versions.postgresql",
-        auth0                   : "com.auth0:java-jwt:$versions.auth0",
+        springCloudOpenFeign        : "org.springframework.cloud:spring-cloud-starter-openfeign:$versions.springCloud",
+        swaggerui                   : "org.springdoc:springdoc-openapi-ui:$versions.swagger",
+        lombok                      : "org.projectlombok:lombok:$versions.lombok",
+        postgresql                  : "org.postgresql:postgresql:$versions.postgresql",
+        auth0                       : "com.auth0:java-jwt:$versions.auth0",
         // Spring Config Server icin gerekli bagimliliklar
-        springCloudStarterConfig: "org.springframework.cloud:spring-cloud-starter-config:$versions.springCloud",
-        springCloudConfigServer : "org.springframework.cloud:spring-cloud-config-server:$versions.springCloud",
-        springCloudConfigClient : "org.springframework.cloud:spring-cloud-config-client:$versions.springCloud",
+        springCloudStarterConfig    : "org.springframework.cloud:spring-cloud-starter-config:$versions.springCloud",
+        springCloudConfigServer     : "org.springframework.cloud:spring-cloud-config-server:$versions.springCloud",
+        springCloudConfigClient     : "org.springframework.cloud:spring-cloud-config-client:$versions.springCloud",
         // Spring Gateway islemleri icin gerekli bagimliliklar
-        springCloudGateway      : "org.springframework.cloud:spring-cloud-starter-gateway:$versions.springCloud",
-        springCloudCircuitBreaker: "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:$versions.springCloudCircuit",
+        springCloudGateway          : "org.springframework.cloud:spring-cloud-starter-gateway:$versions.springCloud",
+        springCloudCircuitBreaker   : "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:$versions.springCloudCircuit",
         springCloudCircuitBreakerReactor: "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j:$versions.springCloudCircuit",
         // Mikro servislerin endpoint takiplerini yapmak ve yasam dongulerini takip etmek icin kullanilir
-        springCloudStarterSleuth : "org.springframework.cloud:spring-cloud-starter-sleuth:$versions.springCloud",
-        springCloudSleuthZipkin  : "org.springframework.cloud:spring-cloud-sleuth-zipkin:$versions.springCloud",
+        springCloudStarterSleuth    : "org.springframework.cloud:spring-cloud-starter-sleuth:$versions.springCloud",
+        springCloudSleuthZipkin     : "org.springframework.cloud:spring-cloud-sleuth-zipkin:$versions.springCloud",
+        // Redis kullanimi icin gerekli olan bagimliliklar
+        springDataRedis             : "org.springframework.boot:spring-boot-starter-data-redis:${versions.springBoot}",
     ]
 }
-
