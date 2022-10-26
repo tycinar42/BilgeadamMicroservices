@@ -4,18 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.*;
-
-@Table(name = "tbluserprofile")
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
+@Document(indexName = "userprofile")
 public class UserProfile {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * Auth servisinden kayit olan kisinin auth id'sini buraya esitliyoruz.
@@ -28,5 +26,4 @@ public class UserProfile {
     private String phone;
     private String address;
     private String avatar;
-
 }

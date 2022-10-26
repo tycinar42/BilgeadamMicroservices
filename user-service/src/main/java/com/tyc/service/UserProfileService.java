@@ -4,6 +4,7 @@ import com.tyc.dto.request.UserProfileSaveRequestDto;
 import com.tyc.dto.request.UserProfileUpdateRequestDto;
 import com.tyc.exception.ErrorType;
 import com.tyc.exception.UserServiceException;
+import com.tyc.manager.IElasticSearchManager;
 import com.tyc.repository.IUserProfileRepository;
 import com.tyc.repository.entity.UserProfile;
 import com.tyc.utility.JwtTokenManager;
@@ -21,12 +22,15 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
 //    private final TokenManager tokenManager;
     private final JwtTokenManager tokenManager;
     private final CacheManager cacheManager;
+    private final IElasticSearchManager elasticSearchManager;
 
-    public UserProfileService(IUserProfileRepository repository, JwtTokenManager tokenManager, CacheManager cacheManager) {
+    public UserProfileService(IUserProfileRepository repository, JwtTokenManager tokenManager, CacheManager cacheManager,
+                              IElasticSearchManager elasticSearchManager) {
         super(repository);
         this.repository = repository;
         this.tokenManager = tokenManager;
         this.cacheManager = cacheManager;
+        this.elasticSearchManager = elasticSearchManager;
     }
 
     @Cacheable(value = "uppercase")
@@ -46,11 +50,12 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     }
 
     public Boolean save(UserProfileSaveRequestDto dto) {
-        save(UserProfile.builder()
+        UserProfile userProfile = save(UserProfile.builder()
                 .authId(dto.getAuthId())
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .build());
+        elasticSearchManager.save(userProfile);
         return true;
     }
 
@@ -67,6 +72,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         profile.setName(dto.getName());
         profile.setSurname(dto.getSurname());
         save(profile);
+        elasticSearchManager.update(profile);
         return true;
     }
 
