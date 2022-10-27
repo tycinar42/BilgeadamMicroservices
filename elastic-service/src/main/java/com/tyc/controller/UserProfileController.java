@@ -1,5 +1,6 @@
 package com.tyc.controller;
 
+import com.tyc.dto.resquest.UserProfileRequestDto;
 import com.tyc.repository.entity.UserProfile;
 import com.tyc.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class UserProfileController {
     private final UserProfileService service;
 
     @PostMapping(SAVE)
-    public ResponseEntity<Void> save(@RequestBody UserProfile userProfile) {
-        service.save(userProfile);
+    public ResponseEntity<Void> save(@RequestBody UserProfileRequestDto dto) {
+        service.save(dto);
         return ResponseEntity.ok().build();
     }
 

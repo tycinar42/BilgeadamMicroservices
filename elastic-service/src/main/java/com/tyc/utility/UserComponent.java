@@ -1,5 +1,6 @@
 package com.tyc.utility;
 
+import com.tyc.dto.resquest.UserProfileRequestDto;
 import com.tyc.manager.IUserProfileManager;
 import com.tyc.repository.entity.UserProfile;
 import com.tyc.service.UserProfileService;
@@ -16,9 +17,15 @@ public class UserComponent {
     private final IUserProfileManager userProfileManager;
     private final UserProfileService userProfileService;
 
-//    @PostConstruct
+    @PostConstruct
     public void firstRun() {
         List<UserProfile> userProfiles = userProfileManager.userList().getBody();
-        userProfileService.saveAll(userProfiles);
+        userProfiles.forEach(userProfile -> {
+            userProfile.setId(null);
+            userProfile.setUserId(Long.getLong(userProfile.getId()));
+            userProfileService.save(userProfile);
+        });
+
+//        userProfileService.saveAll(userProfiles);
     }
 }

@@ -7,7 +7,9 @@ ext {
         postgresql                  : "42.5.0",
         swagger                     : "1.6.12",
         auth0                       : "4.1.0",
-        springCloudCircuit          : "2.1.4"
+        springCloudCircuit          : "2.1.4",
+        graphql                     : "13.0.0",
+        graphiql                     : "11.1.0",
     ]
 
     libs = [
@@ -37,5 +39,9 @@ ext {
         springDataRedis             : "org.springframework.boot:spring-boot-starter-data-redis:${versions.springBoot}",
         // Elastic Search icin gerekli data bagimliliklari
         springDataElasticSearch     : "org.springframework.boot:spring-boot-starter-data-elasticsearch:${versions.springBoot}",
+        // GraphQl icin gerekli bagimliliklar
+        springGraphQL           : "com.graphql-java-kickstart:graphql-spring-boot-starter:$versions.graphql",
+        springGraphiQL          : "com.graphql-java-kickstart:graphiql-spring-boot-starter:$versions.graphiql",
+        springGraphQLTools      : "com.graphql-java-kickstart:graphql-java-tools:$versions.graphql",
     ]
 }

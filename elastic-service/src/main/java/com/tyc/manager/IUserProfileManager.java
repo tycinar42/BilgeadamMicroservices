@@ -1,5 +1,6 @@
 package com.tyc.manager;
 
+import com.tyc.dto.resquest.UserProfileRequestDto;
 import com.tyc.repository.entity.UserProfile;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
