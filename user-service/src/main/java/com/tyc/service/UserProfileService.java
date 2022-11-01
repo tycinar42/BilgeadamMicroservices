@@ -12,12 +12,13 @@ import com.tyc.utility.ServiceManager;
 import com.tyc.utility.TokenManager;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class UserProfileService extends ServiceManager<UserProfile, Long> {
+public class UserProfileService extends ServiceManager<UserProfile, String> {
     private final IUserProfileRepository repository;
 //    private final TokenManager tokenManager;
     private final JwtTokenManager tokenManager;
@@ -55,14 +56,14 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .build());
-        elasticSearchManager.save(userProfile);
+//        elasticSearchManager.save(userProfile);
         return true;
     }
 
     public Boolean update(UserProfileUpdateRequestDto dto) {
         Optional<Long> authId = tokenManager.getByIdFromToken(dto.getToken());
         if(authId.isEmpty()) throw new UserServiceException(ErrorType.INVALID_ID);
-        Optional<UserProfile> userProfile = repository.findById(authId.get());
+        Optional<UserProfile> userProfile = repository.findById(Long.toString(authId.get()));
         if(userProfile.isEmpty()) throw new UserServiceException(ErrorType.USER_DID_NOT_FIND);
         UserProfile profile = userProfile.get();
         profile.setAddress(dto.getAddress());
@@ -72,7 +73,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         profile.setName(dto.getName());
         profile.setSurname(dto.getSurname());
         save(profile);
-        elasticSearchManager.update(profile);
+//        elasticSearchManager.update(profile);
         return true;
     }
 
@@ -84,6 +85,30 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
          * cacheManager.getCache("uppercase")
          */
         cacheManager.getCache("uppercase").evict(profile.getAuthId());
+    }
+
+    /**
+     *
+     * ORN: 500 adet kayit var
+     *  DIKKAT: Sayfa sayilari 0(Sifir)'dan baslar
+     *  - 10'ar aet kayit gostermek istedigimizde 50 adet sayfa olusur.
+     *  - 2. sayfayi istedigimizde 21-30. kayitlar gosterilir
+     * @param pageSize -> her seferinde kac kayit donecegini doner
+     * @param currentPageNumber -> gecerli sayfanin hangisi oldugunu belirler
+     * @param sortParameter -> siralama isleminin hangi kolona gore yapilacagini belirler
+     * @param sortDirection -> siralama yonu, ASC, DESC
+     * @return
+     */
+    public Page<UserProfile> getAllPage(int pageSize, int currentPageNumber, String sortParameter, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortParameter);
+        Pageable pageable = PageRequest.of(currentPageNumber, pageSize, sort);
+        return repository.findAll(pageable);
+    }
+
+    public Slice<UserProfile> getAllSlice(int pageSize, int currentPageNumber, String sortParameter, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortParameter);
+        Pageable pageable = PageRequest.of(currentPageNumber, pageSize, sort);
+        return repository.findAll(pageable);
     }
 
 }

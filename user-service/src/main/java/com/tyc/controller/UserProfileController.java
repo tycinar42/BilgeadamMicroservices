@@ -5,6 +5,8 @@ import com.tyc.dto.request.UserProfileUpdateRequestDto;
 import com.tyc.repository.entity.UserProfile;
 import com.tyc.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +47,12 @@ public class UserProfileController {
         return ResponseEntity.ok(service.save(dto));
     }
 
+    @PostMapping("/saveall")
+    public ResponseEntity<Void> saveAll(@RequestBody List<UserProfileSaveRequestDto> dtoList) {
+        dtoList.forEach(dto -> service.save(dto));
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping(UPDATE)
     public ResponseEntity<Boolean> update(@RequestBody UserProfileUpdateRequestDto dto) {
         return ResponseEntity.ok(service.update(dto));
@@ -58,5 +66,15 @@ public class UserProfileController {
     @GetMapping(USER_LIST)
     public ResponseEntity<List<UserProfile>> userList() {
         return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping(GETALLPAGE)
+    public ResponseEntity<Page<UserProfile>> getAllPage(int pageSize, int pageNumber, String parameter, String direction) {
+        return ResponseEntity.ok(service.getAllPage(pageSize, pageNumber, parameter, direction));
+    }
+
+    @GetMapping(GETALLSLICE)
+    public ResponseEntity<Slice<UserProfile>> getAllSlice(int pageSize, int pageNumber, String parameter, String direction) {
+        return ResponseEntity.ok(service.getAllSlice(pageSize, pageNumber, parameter, direction));
     }
 }

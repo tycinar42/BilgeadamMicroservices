@@ -17,15 +17,15 @@ public class UserComponent {
     private final IUserProfileManager userProfileManager;
     private final UserProfileService userProfileService;
 
-    @PostConstruct
-    public void firstRun() {
-        List<UserProfile> userProfiles = userProfileManager.userList().getBody();
-        userProfiles.forEach(userProfile -> {
-            userProfile.setId(null);
-            userProfile.setUserId(Long.getLong(userProfile.getId()));
-            userProfileService.save(userProfile);
-        });
-
-//        userProfileService.saveAll(userProfiles);
-    }
+//    @PostConstruct
+//    public void firstRun() {
+//        List<UserProfile> userProfiles = userProfileManager.userList().getBody();
+//        userProfiles.forEach(userProfile -> {
+//            userProfile.setId(null);
+//            userProfile.setUserId(Long.getLong(userProfile.getId()));
+//            userProfileService.save(userProfile);
+//        });
+//
+////        userProfileService.saveAll(userProfiles);
+//    }
 }

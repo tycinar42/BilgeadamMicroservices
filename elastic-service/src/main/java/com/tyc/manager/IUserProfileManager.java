@@ -15,6 +15,6 @@ import static com.tyc.constants.ApiUrls.USER_LIST;
         url = "${myapplication.user-service.feign-client}/user", decode404 = true)
 public interface IUserProfileManager {
 
-    @GetMapping(USER_LIST)
-    ResponseEntity<List<UserProfile>> userList();
+//    @GetMapping(USER_LIST)
+//    ResponseEntity<List<UserProfile>> userList();
 }
