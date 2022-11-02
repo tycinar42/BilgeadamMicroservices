@@ -6,4 +6,6 @@ public class ApiUrls {
     public static final String DOLOGIN = "/dologin";
     public static final String REGISTER = "/register";
     public static final String SAVE = "/save";
+    public static final String GETALL = "/getall";
+    public static final String SENDMESSAGE = "/sendmessage";
 }

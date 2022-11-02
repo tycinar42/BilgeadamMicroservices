@@ -53,6 +53,11 @@ public class UserProfileController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping(UPDATE + "untoken")
+    public ResponseEntity<Boolean> updateUntoken(@RequestBody UserProfileUpdateRequestDto dto) {
+        return ResponseEntity.ok(service.updateUnToken(dto));
+    }
+
     @PostMapping(UPDATE)
     public ResponseEntity<Boolean> update(@RequestBody UserProfileUpdateRequestDto dto) {
         return ResponseEntity.ok(service.update(dto));

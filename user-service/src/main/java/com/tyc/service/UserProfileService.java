@@ -60,10 +60,27 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
         return true;
     }
 
+    public Boolean updateUnToken(UserProfileUpdateRequestDto dto) {
+//        Optional<Long> authId = tokenManager.getByIdFromToken(dto.getToken());
+//        if(authId.isEmpty()) throw new UserServiceException(ErrorType.INVALID_ID);
+        Optional<UserProfile> userProfile = repository.findOptionalByAuthId(dto.getAuthId());
+        if(userProfile.isEmpty()) throw new UserServiceException(ErrorType.USER_DID_NOT_FIND);
+        UserProfile profile = userProfile.get();
+        profile.setAddress(dto.getAddress());
+        profile.setPhone(dto.getPhone());
+        profile.setAvatar(dto.getAvatar());
+        profile.setEmail(dto.getEmail());
+        profile.setName(dto.getName());
+        profile.setSurname(dto.getSurname());
+        save(profile);
+//        elasticSearchManager.update(profile);
+        return true;
+    }
+
     public Boolean update(UserProfileUpdateRequestDto dto) {
         Optional<Long> authId = tokenManager.getByIdFromToken(dto.getToken());
         if(authId.isEmpty()) throw new UserServiceException(ErrorType.INVALID_ID);
-        Optional<UserProfile> userProfile = repository.findById(Long.toString(authId.get()));
+        Optional<UserProfile> userProfile = repository.findOptionalByAuthId(authId.get());
         if(userProfile.isEmpty()) throw new UserServiceException(ErrorType.USER_DID_NOT_FIND);
         UserProfile profile = userProfile.get();
         profile.setAddress(dto.getAddress());

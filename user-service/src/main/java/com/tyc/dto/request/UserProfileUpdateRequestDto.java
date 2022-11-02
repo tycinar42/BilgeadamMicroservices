@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserProfileUpdateRequestDto {
     private String token;
+    private Long authId;
     private String name;
     private String surname;
     private String email;
