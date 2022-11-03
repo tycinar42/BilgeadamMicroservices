@@ -2,6 +2,8 @@ package com.tyc.controller;
 
 import com.tyc.dto.request.LoginRequestDto;
 import com.tyc.dto.request.RegisterRequestDto;
+import com.tyc.dto.response.LoginResponseDto;
+import com.tyc.dto.response.RegisterResponseDto;
 import com.tyc.rabbitmq.producer.MessageProducer;
 import com.tyc.repository.entity.Auth;
 import com.tyc.repository.enums.Activated;
@@ -24,14 +26,25 @@ public class AuthController {
     private final AuthService service;
     private final MessageProducer messageProducer;
     @PostMapping(DOLOGIN)
-    public ResponseEntity<String > doLogin(@RequestBody @Valid LoginRequestDto dto) {
-        return ResponseEntity.ok(service.doLogin(dto));
+    public ResponseEntity<LoginResponseDto> doLogin(@RequestBody @Valid LoginRequestDto dto) {
+        String token = service.doLogin(dto);
+        return ResponseEntity.ok(LoginResponseDto.builder()
+                        .token(token)
+                        .code(1201)
+                        .message("Giris Basarili")
+                .build());
     }
     @PostMapping(REGISTER)
-    public ResponseEntity<Void> register(@RequestBody @Valid RegisterRequestDto dto) {
+    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterRequestDto dto) {
         if(service.save(dto))
-            return ResponseEntity.ok().build();
-        return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok(RegisterResponseDto.builder()
+                            .code(1200)
+                            .message("Kayit Basarili")
+                    .build());
+        return ResponseEntity.badRequest().body(RegisterResponseDto.builder()
+                        .code(1400)
+                        .message("Kayit Basarisiz")
+                .build());
     }
 
     @GetMapping(GETALL)

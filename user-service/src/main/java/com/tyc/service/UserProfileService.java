@@ -1,5 +1,6 @@
 package com.tyc.service;
 
+import com.tyc.dto.request.GetMyProfileRequestDto;
 import com.tyc.dto.request.UserProfileSaveRequestDto;
 import com.tyc.dto.request.UserProfileUpdateRequestDto;
 import com.tyc.exception.ErrorType;
@@ -34,6 +35,21 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
         this.elasticSearchManager = elasticSearchManager;
     }
 
+    public UserProfile findByToken(GetMyProfileRequestDto dto) {
+        Optional<Long> authId = tokenManager.getByIdFromToken(dto.getToken());
+        if(authId.isEmpty()) throw new UserServiceException(ErrorType.INVALID_ID);
+        Optional<UserProfile> userProfile = repository.findOptionalByAuthId(authId.get());
+        if(userProfile.isEmpty()) throw new UserServiceException(ErrorType.USER_DID_NOT_FIND);
+        return userProfile.get();
+        /*
+        GlobalException burada olusacak hatayi yakalayabilir; ama istersek biz de bu hatayi kontrol edebiliriz.
+        try {
+            Optional<UserProfile> userProfile = repository.findOptionalByAuthId(authId.get());
+        } catch (Exception e) {
+            throw new UserServiceException(ErrorType.INVALID_ID);
+        }
+         */
+    }
     @Cacheable(value = "uppercase")
     public String getUpperCase(Long authId) {
         /**
@@ -121,7 +137,6 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
         Pageable pageable = PageRequest.of(currentPageNumber, pageSize, sort);
         return repository.findAll(pageable);
     }
-
     public Slice<UserProfile> getAllSlice(int pageSize, int currentPageNumber, String sortParameter, String sortDirection) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortParameter);
         Pageable pageable = PageRequest.of(currentPageNumber, pageSize, sort);

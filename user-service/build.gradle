@@ -10,4 +10,5 @@ dependencies {
     implementation libs.springCloudConfigClient
     implementation libs.springDataRedis
     implementation libs.springBootDataMongoDb
+    implementation libs.springBootRabbitAMQP
 }
