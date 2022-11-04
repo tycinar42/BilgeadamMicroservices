@@ -35,6 +35,9 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
         this.elasticSearchManager = elasticSearchManager;
     }
 
+    public Optional<UserProfile> findOptionalByAuthId(Long authId) {
+        return repository.findOptionalByAuthId(authId);
+    }
     public UserProfile findByToken(GetMyProfileRequestDto dto) {
         Optional<Long> authId = tokenManager.getByIdFromToken(dto.getToken());
         if(authId.isEmpty()) throw new UserServiceException(ErrorType.INVALID_ID);

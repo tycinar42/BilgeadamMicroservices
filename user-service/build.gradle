@@ -11,4 +11,5 @@ dependencies {
     implementation libs.springDataRedis
     implementation libs.springBootDataMongoDb
     implementation libs.springBootRabbitAMQP
+    implementation libs.springBootStarterSecurity
 }
