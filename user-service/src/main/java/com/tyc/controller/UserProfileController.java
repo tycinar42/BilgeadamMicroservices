@@ -1,6 +1,7 @@
 package com.tyc.controller;
 
 import com.tyc.dto.request.*;
+import com.tyc.dto.response.FindByAuthIdResponseDto;
 import com.tyc.repository.entity.Online;
 import com.tyc.repository.entity.UserProfile;
 import com.tyc.service.OnlineService;
@@ -82,7 +83,7 @@ public class UserProfileController {
         return null;
     }
     @GetMapping(USER_LIST)
-    @PreAuthorize("hasAuthority('ADMIN_ARKADAS') or hasAuthority('JILET_ABBAS')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PRODUCTOWNER')")
     public ResponseEntity<List<UserProfile>> userList() {
         return ResponseEntity.ok(service.findAll());
     }
@@ -93,5 +94,16 @@ public class UserProfileController {
     @GetMapping(GETALLSLICE)
     public ResponseEntity<Slice<UserProfile>> getAllSlice(int pageSize, int pageNumber, String parameter, String direction) {
         return ResponseEntity.ok(service.getAllSlice(pageSize, pageNumber, parameter, direction));
+    }
+
+    @PostMapping("/findbyauthid")
+    public ResponseEntity<FindByAuthIdResponseDto> findByAuthId(@RequestBody FindByAuthIdRequestDto dto) {
+        UserProfile userProfile = service.findByAuthId(dto);
+        return ResponseEntity.ok(FindByAuthIdResponseDto.builder()
+                        .avatar(userProfile.getAvatar())
+                        .name(userProfile.getName())
+                        .userId(userProfile.getId())
+                        .username(userProfile.getUsername())
+                .build());
     }
 }

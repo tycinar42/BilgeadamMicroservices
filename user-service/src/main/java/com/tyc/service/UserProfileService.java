@@ -1,5 +1,6 @@
 package com.tyc.service;
 
+import com.tyc.dto.request.FindByAuthIdRequestDto;
 import com.tyc.dto.request.GetMyProfileRequestDto;
 import com.tyc.dto.request.UserProfileSaveRequestDto;
 import com.tyc.dto.request.UserProfileUpdateRequestDto;
@@ -144,6 +145,12 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortParameter);
         Pageable pageable = PageRequest.of(currentPageNumber, pageSize, sort);
         return repository.findAll(pageable);
+    }
+
+    public UserProfile findByAuthId(FindByAuthIdRequestDto dto) {
+        Optional<UserProfile> userProfile = repository.findOptionalByAuthId(dto.getAuthId());
+        if(userProfile.isEmpty()) throw new UserServiceException(ErrorType.USER_DID_NOT_FIND);
+        return userProfile.get();
     }
 
 }

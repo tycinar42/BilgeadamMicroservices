@@ -1,7 +1,8 @@
 package com.tyc.config.security;
 
-import com.tyc.repository.entity.UserProfile;
-import com.tyc.service.UserProfileService;
+import com.tyc.dto.request.FindByAuthIdRequestDto;
+import com.tyc.dto.response.FindByAuthIdResponseDto;
+import com.tyc.manager.IUserServiceManager;
 import com.tyc.utility.JwtTokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     JwtTokenManager jwtTokenManager;
     @Autowired
-    UserProfileService service;
+    IUserServiceManager userServiceManager;
     @Autowired
     JwtMyUser jwtMyUser;
 
@@ -37,9 +38,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
             Optional<Long> authId = jwtTokenManager.getByIdFromToken(token);
             if(authId.isPresent()) {
-                Optional<UserProfile> userProfile = service.findOptionalByAuthId(authId.get());
-                if(userProfile.isPresent()) {
-                    UserDetails userDetails = jwtMyUser.loadByAuthId(userProfile.get());
+                FindByAuthIdResponseDto userProfile = userServiceManager.findByAuthId(FindByAuthIdRequestDto.builder()
+                                .authId(authId.get())
+                        .build()).getBody();
+                if(userProfile.getUserId() != null) {
+                    UserDetails userDetails = jwtMyUser.loadByAuthId(userProfile, authId.get());
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails,

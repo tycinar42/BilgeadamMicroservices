@@ -1,8 +1,8 @@
 package com.tyc.config.security;
 
 import com.tyc.dto.request.GetAllRolesRequestDto;
+import com.tyc.dto.response.FindByAuthIdResponseDto;
 import com.tyc.manager.IAuthServiceManager;
-import com.tyc.repository.entity.UserProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,10 +24,10 @@ public class JwtMyUser implements UserDetailsService {
         return null;
     }
 
-    public UserDetails loadByAuthId(UserProfile userProfile) {
+    public UserDetails loadByAuthId(FindByAuthIdResponseDto userProfile, Long authId) {
         List<String> roles = authServiceManager.getAllRolesByAuthId(
                 GetAllRolesRequestDto.builder()
-                        .authId(userProfile.getAuthId())
+                        .authId(authId)
                         .build()
         ).getBody();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
